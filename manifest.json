@@ -1,0 +1,106 @@
+{
+  "version": 1,
+  "locale": "en_US",
+  "platform": {
+    "OS.type": "unix",
+    "file.sep": "/",
+    "pkgType": "source",
+    "R.version": {
+      "major": "4",
+      "minor": "5.0"
+    },
+    "R.version.string": "R version 4.5.0 (2025-04-01)"
+  },
+  "metadata": {
+    "appmode": "shiny",
+    "primary_rmd": null,
+    "primary_doc": "app.R",
+    "content_category": "shiny",
+    "has_parameters": false
+  },
+  "packages": [
+    {
+      "name": "shiny",
+      "version": "1.8.0"
+    },
+    {
+      "name": "shinydashboard",
+      "version": "0.7.2"
+    },
+    {
+      "name": "data.table",
+      "version": "1.14.8"
+    },
+    {
+      "name": "ComplexHeatmap",
+      "version": "2.18.0"
+    },
+    {
+      "name": "InteractiveComplexHeatmap",
+      "version": "1.11.1"
+    },
+    {
+      "name": "circlize",
+      "version": "0.4.15"
+    },
+    {
+      "name": "shinycssloaders",
+      "version": "1.0.0"
+    },
+    {
+      "name": "Cairo",
+      "version": "1.6-0"
+    },
+    {
+      "name": "DT",
+      "version": "0.30"
+    },
+    {
+      "name": "ggplot2",
+      "version": "3.5.1"
+    },
+    {
+      "name": "shinyjs",
+      "version": "2.1.0"
+    },
+    {
+      "name": "heatmaply",
+      "version": "1.4.2"
+    },
+    {
+      "name": "plotly",
+      "version": "4.10.3"
+    },
+    {
+      "name": "ggnewscale",
+      "version": "0.4.9"
+    },
+    {
+      "name": "fastcluster",
+      "version": "1.2.3"
+    },
+    {
+      "name": "Seurat",
+      "version": "5.0.1"
+    },
+    {
+      "name": "remotes",
+      "version": "2.4.2"
+    },
+    {
+      "name": "BiocManager",
+      "version": "1.30.22"
+    }
+  ],
+  "files": [
+    "app.R",
+    "global.R",
+    "server.R",
+    "ui.R",
+    "heatmap.R",
+    "modules/utilities.R",
+    "modules/data_processing.R",
+    "modules/heatmap_module.R",
+    "modules/rendering_functions.R"
+  ]
+}
