@@ -1,0 +1,12 @@
+name: shiny_dashboard_2
+title: shiny_dashboard_2
+username: kdhulipalla
+account: kdhulipalla
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 14737662
+bundleId: 10358884
+url: https://kdhulipalla.shinyapps.io/shiny_dashboard_2/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
