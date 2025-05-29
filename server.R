@@ -11,11 +11,13 @@ source("modules/rendering_functions.R")
 # Initialize reactive values
 data_cache <- reactiveVal(list(name = NULL, df = NULL))
 cluster_map <- reactiveVal(NULL) 
+selected_file <- reactiveVal(NULL)
 
 server <- function(input, output, session) {
   data <- reactiveVal()
   heatmap_obj <- reactiveVal()
   display_labels <- reactiveVal()
+  output$sub_heatmaply <- renderPlotly(NULL)
   
   # Reset inputs when new file is selected
   observeEvent(input$file, {
@@ -30,7 +32,8 @@ server <- function(input, output, session) {
   
   # Process data when submit button is clicked
   observeEvent(input$submit, {
-    req(input$file)
+    selected_file(input$file)
+    req(selected_file())
     showNotification("Loading data.", duration = NULL, id = "load_msg")
     
     df <- if (!is.null(data_cache()$name) && identical(data_cache()$name, input$file)) {
@@ -61,16 +64,17 @@ server <- function(input, output, session) {
     
     cluster_map(result$clusters)
     display_labels(result$display_labels)
+    
     heatmap_obj(result$heatmap)
     
     removeNotification("load_msg")
   })
   
   # Handle heatmap interactions
-  observeEvent(heatmap_obj(), {
+  observeEvent(input$submit, {
     req(heatmap_obj())
-    ht <- draw(heatmap_obj(), test = FALSE)
     
+    ht <- draw(heatmap_obj(), test = FALSE)
     makeInteractiveComplexHeatmap(
       input, output, session, ht,
       heatmap_id = "heatmap_output",
@@ -146,7 +150,7 @@ server <- function(input, output, session) {
         })
         
         render_selected_table(output, mat, labels, selected_ids, selected_cols)
-        render_dotplot(output, input$file, selected_ids, labels)
+        render_dotplot(output, selected_file(), selected_ids, labels)
       }
     )
   })

@@ -2026,7 +2026,7 @@
       "description": {
         "Package": "fs",
         "Title": "Cross-Platform File System Operations Based on 'libuv'",
-        "Version": "1.6.5",
+        "Version": "1.6.6",
         "Authors@R": "c(\n    person(\"Jim\", \"Hester\", role = \"aut\"),\n    person(\"Hadley\", \"Wickham\", , \"hadley@posit.co\", role = \"aut\"),\n    person(\"Gábor\", \"Csárdi\", , \"csardi.gabor@gmail.com\", role = c(\"aut\", \"cre\")),\n    person(\"libuv project contributors\", role = \"cph\",\n           comment = \"libuv library\"),\n    person(\"Joyent, Inc. and other Node contributors\", role = \"cph\",\n           comment = \"libuv library\"),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n  )",
         "Description": "A cross-platform interface to file system operations, built\n    on top of the 'libuv' C library.",
         "License": "MIT + file LICENSE",
@@ -2045,12 +2045,12 @@
         "RoxygenNote": "7.2.3",
         "SystemRequirements": "GNU make",
         "NeedsCompilation": "yes",
-        "Packaged": "2024-10-28 22:30:40 UTC; gaborcsardi",
+        "Packaged": "2025-04-12 09:39:13 UTC; gaborcsardi",
         "Author": "Jim Hester [aut],\n  Hadley Wickham [aut],\n  Gábor Csárdi [aut, cre],\n  libuv project contributors [cph] (libuv library),\n  Joyent, Inc. and other Node contributors [cph] (libuv library),\n  Posit Software, PBC [cph, fnd]",
         "Maintainer": "Gábor Csárdi <csardi.gabor@gmail.com>",
         "Repository": "CRAN",
-        "Date/Publication": "2024-10-30 08:40:02 UTC",
-        "Built": "R 4.3.3; x86_64-w64-mingw32; 2025-04-07 00:22:32 UTC; windows",
+        "Date/Publication": "2025-04-12 10:40:02 UTC",
+        "Built": "R 4.3.2; x86_64-w64-mingw32; 2025-05-29 00:41:39 UTC; windows",
         "Archs": "x64"
       }
     },
@@ -5341,10 +5341,10 @@
       "checksum": "ae8ded67f57191e73d08c20dd4f0f1db"
     },
     "server.R": {
-      "checksum": "8bcd8b42e5f1c19ca007751c3545052f"
+      "checksum": "b889061e7dd2f36b5a4b6dd9e00a871a"
     },
     "ui.R": {
-      "checksum": "626a6fecf48196ae62405bec50e74b15"
+      "checksum": "1f795fd73be260235e91e41fcd353c11"
     },
     "www/welcome_page.png": {
       "checksum": "4204ea4a0451b400fc6acb33c6b875ff"

@@ -53,7 +53,7 @@ sidebar <- dashboardSidebar(
       selected = "GeneName",
       inline = TRUE
     ),
-    numericInput("num_clusters", "Number of Clusters (cut tree):", value = 5, min = 5, max = 20),
+    numericInput("num_clusters", "Number of Clusters (cut tree):", value = 8, min = 5, max = 20),
     radioButtons("matrix_type", "Matrix Type:",
                  choices = c("Full Matrix", "Reduced Matrix", "Top N Genes"),
                  selected = "Full Matrix"),
