@@ -141,7 +141,8 @@ server <- function(input, output, session) {
         output$sub_heatmaply <- renderPlotly({
           render_sub_heatmap(
             mat = mat,
-            gene_ids = selected_ids,
+            row_ids = selected_ids,
+            col_ids = selected_cols,
             row_categories = row_categories,
             top_categories = top_categories,
             labels = labels,
@@ -184,7 +185,8 @@ server <- function(input, output, session) {
     output$sub_heatmaply <- renderPlotly({
       render_sub_heatmap(
         mat = mat,
-        gene_ids = gene_ids,
+        row_ids = gene_ids,
+        col_ids = gene_ids,
         row_categories = d$row_categories,
         top_categories = d$top_categories,
         labels = labels,

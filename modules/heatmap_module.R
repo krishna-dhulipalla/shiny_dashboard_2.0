@@ -33,6 +33,9 @@ prepare_heatmap_data <- function(input, df, session) {
     
     category_choices <- c("Top 5 Categories" = "Top5",
                           setNames(names(cat_counts), paste0(names(cat_counts), " (", cat_counts, ")")))
+    if ("Other" %in% row_categories_grouped) {
+      category_choices <- c(category_choices, "Other (aggregated)" = "Other")
+    }
     updateSelectInput(session, "highlight_category", choices = category_choices, selected = input$highlight_category)
   } else {
     updateSelectInput(session, "highlight_category", choices = NULL, selected = "Top5")

@@ -1,36 +1,50 @@
 # Output rendering functions ---------------------------------------------------
 
 #' Render sub-heatmap plot
-render_sub_heatmap <- function(mat, gene_ids, row_categories, top_categories, labels, selected_category) {
-  if (length(gene_ids) < 2) return(NULL)
+render_sub_heatmap <- function(mat, row_ids, col_ids, row_categories, top_categories, labels, selected_category) {
+  if (length(row_ids) < 2 || length(col_ids) < 2) return(NULL)
   
-  sub_mat <- mat[gene_ids, gene_ids, drop = FALSE]
-  gene_labels <- labels[gene_ids]
-
-  # Prepare category annotations
+  sub_mat <- mat[row_ids, col_ids, drop = FALSE]
+  gene_labels_row <- labels[row_ids]
+  gene_labels_col <- labels[col_ids]
+  
+  # Prepare category annotations for rows
   if (!is.null(row_categories)) {
-    selected_row_categories <- row_categories[gene_ids]
+    selected_row_categories <- row_categories[row_ids]
     
     if (!is.null(selected_category) && selected_category != "Top5") {
-      selected_row_categories[is.na(selected_row_categories) | selected_row_categories != selected_category] <- "Other"
+      if (selected_category == "Other") {
+        # Mark all non-top categories as "Other", rest as "Non-Other"
+        selected_row_categories <- ifelse(
+          is.na(selected_row_categories) | selected_row_categories == "Other",
+          "Other", "Non-Other"
+        )
+      } else {
+        selected_row_categories[is.na(selected_row_categories) | selected_row_categories != selected_category] <- "Other"
+      }
     } else {
       selected_row_categories[selected_row_categories == ""] <- NA
       selected_row_categories[is.na(selected_row_categories)] <- "Other"
     }
   } else {
-    selected_row_categories <- rep("Uncategorized", length(gene_ids))
+    selected_row_categories <- rep("Uncategorized", length(row_ids))
   }
-
-  names(selected_row_categories) <- gene_labels
+  
+  names(selected_row_categories) <- gene_labels_row
   row_ann <- data.frame(Category = factor(selected_row_categories), stringsAsFactors = FALSE)
-  rownames(row_ann) <- gene_labels
-
+  rownames(row_ann) <- gene_labels_row
+  
   # Define colors
   if (!is.null(selected_category) && selected_category != "Top5") {
-    category_colors_final <- setNames(c("#E41A1C", "#999999"), c(selected_category, "Other"))
-    row_ann$Category <- as.character(row_ann$Category)
-    row_ann$Category[is.na(row_ann$Category) | row_ann$Category != selected_category] <- "Other"
-    row_ann$Category <- factor(row_ann$Category, levels = names(category_colors_final))
+    if (selected_category == "Other") {
+      category_colors_final <- setNames(c("#999999", "#000000"), c("Other", "Non-Other"))
+      row_ann$Category <- factor(row_ann$Category, levels = c("Other", "Non-Other"))
+    } else {
+      category_colors_final <- setNames(c("#E41A1C", "#999999"), c(selected_category, "Other"))
+      row_ann$Category <- as.character(row_ann$Category)
+      row_ann$Category[is.na(row_ann$Category) | row_ann$Category != selected_category] <- "Other"
+      row_ann$Category <- factor(row_ann$Category, levels = names(category_colors_final))
+    }
   } else {
     all_levels <- setdiff(top_categories, "Other")
     all_levels <- all_levels[!is.na(all_levels)]
@@ -38,20 +52,37 @@ render_sub_heatmap <- function(mat, gene_ids, row_categories, top_categories, la
     row_ann$Category <- factor(row_ann$Category, levels = all_levels)
     category_colors_final <- setNames(my_colors[seq_along(all_levels)], all_levels)
   }
-
-  # Build heatmap
+  
+  
+  # Generate tooltip text matrix
+  plot_data <- as.data.frame(as.table(sub_mat))
+  colnames(plot_data) <- c("Row", "Column", "Value")
+  plot_data$Row <- gene_labels_row[as.character(plot_data$Row)]
+  plot_data$Column <- gene_labels_col[as.character(plot_data$Column)]
+  plot_data$Category <- row_ann$Category[as.character(plot_data$Row)]
+  plot_data$text <- paste0(
+    "Row: ", plot_data$Row,
+    "<br>Column: ", plot_data$Column,
+    "<br>Value: ", round(plot_data$Value, 3),
+    "<br>Category: ", plot_data$Category
+  )
+  text_matrix <- reshape2::acast(plot_data, Row ~ Column, value.var = "text")
+  
+  # Determine if side annotation is needed
   add_side_annotation <- !(is.null(row_categories) || all(is.na(row_ann$Category)))
   
+  # Build plot
   p <- heatmaply(
     sub_mat,
+    text_matrix = text_matrix,
     colors = colorRampPalette(c("blue", "white", "red"))(256),
     limits = c(-1, 1),
     dendrogram = "none",
     Rowv = NULL,
     Colv = NULL,
     showticklabels = c(TRUE, TRUE),
-    labRow = gene_labels,
-    labCol = gene_labels,
+    labRow = gene_labels_row,
+    labCol = gene_labels_col,
     row_side_colors = if (add_side_annotation) row_ann else NULL,
     row_side_palette = if (add_side_annotation) category_colors_final else NULL,
     hide_colorbar = TRUE,
@@ -61,12 +92,12 @@ render_sub_heatmap <- function(mat, gene_ids, row_categories, top_categories, la
     margins = c(5, 5, 5, 5),
     plot_method = "plotly"
   )
-
+  
   for (i in seq_along(p$x$data)) {
     p$x$data[[i]]$showlegend <- FALSE
     p$x$data[[i]]$showscale <- FALSE
   }
-
+  
   return(p %>% layout(margin = list(t = 5, b = 5, l = 5, r = 5), xaxis = list(tickangle = 270)))
 }
 
